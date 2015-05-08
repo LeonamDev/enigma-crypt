@@ -204,3 +204,115 @@ void decode_message(Enigma *enigma,char *message,char *decoded_message)
         ++decoded_message;
     }
 }
+
+char* generate_output_filename(char *original,char *suffix)
+{
+    char *outfilename;
+    size_t original_size;
+    size_t name_end;
+    char *file_extension_point;
+
+    original_size = strlen(original);
+
+    outfilename = (char *) malloc(sizeof(char) * (original_size + strlen(suffix) + 1) );
+
+    if(outfilename != NULL)
+    {
+        file_extension_point = strrchr(original,'.');
+        if(file_extension_point != NULL)
+        {
+            name_end = (file_extension_point - original);
+
+            strncpy(outfilename, original, name_end );
+            strcpy(outfilename + name_end, suffix);
+            strcat(outfilename,file_extension_point);
+        }
+    }
+
+    return outfilename;
+}
+
+void encode_file(Enigma *enigma,char *filename)
+{
+    FILE *input;
+    FILE *output;
+    char *outfilename;
+    char character;
+
+    input = fopen(filename,"r");
+
+    if(input == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open input file [%s]\n",filename);
+        return;
+    }
+
+    outfilename = generate_output_filename(filename,"_encoded");
+    if(outfilename == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open output file [%s]\n",filename);
+        fclose(input);
+        return;
+    }
+
+    output = fopen(outfilename,"w");
+    if(output == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open output file [%s]\n",filename);
+        free(outfilename);
+        fclose(input);
+        return;
+    }
+
+    while( (character = fgetc(input)) != EOF )
+    {
+        encode_character(enigma,&character);
+        fputc(character,output);
+    }
+
+    free(outfilename);
+    fclose(output);
+    fclose(input);
+}
+void decode_file(Enigma *enigma,char *filename)
+{
+    FILE *input;
+    FILE *output;
+    char *outfilename;
+    char character;
+
+    input = fopen(filename,"r");
+
+    if(input == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open input file [%s]\n",filename);
+        return;
+    }
+
+    outfilename = generate_output_filename(filename,"_decoded");
+    if(outfilename == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open output file [%s]\n",filename);
+        fclose(input);
+        return;
+    }
+
+    output = fopen(outfilename,"w");
+    if(output == NULL)
+    {
+        fprintf(stderr, "\nCouldn't open output file [%s]\n",filename);
+        free(outfilename);
+        fclose(input);
+        return;
+    }
+
+    while( (character = fgetc(input)) != EOF )
+    {
+        decode_character(enigma,&character);
+        fputc(character,output);
+    }
+
+    free(outfilename);
+    fclose(output);
+    fclose(input);
+}
