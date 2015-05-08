@@ -3,3 +3,6 @@ enigma
 
 # Object files
 *.o
+
+# Text files (used for testing)
+*.txt
