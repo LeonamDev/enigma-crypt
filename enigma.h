@@ -15,12 +15,14 @@ typedef struct
     int rotor_size;
 } Enigma;
 
+void init_enigma(Enigma *enigma);
 Enigma* create_enigma(void);
-
 void destroy_enigma(Enigma *enigma);
 void print_rotors(Enigma *enigma);
 void reset_rotors(Enigma *enigma);
+void encode_character(Enigma *enigma,char *character);
 void encode_message(Enigma *enigma,char *message,char *encoded_message);
+void decode_character(Enigma *enigma,char *character);
 void decode_message(Enigma *enigma,char *message,char *decoded_message);
 
 #endif

@@ -20,6 +20,12 @@ void init_rotors(Enigma *enigma)
     }
 }
 
+void init_enigma(Enigma *enigma)
+{
+    enigma->rotor_size = ROTOR_SIZE;
+    init_rotors(enigma);
+}
+
 Enigma* create_enigma(void)
 {
     Enigma *new_enigma;
@@ -28,13 +34,7 @@ Enigma* create_enigma(void)
 
     if(new_enigma != NULL)
     {
-        new_enigma->rotor_size = ROTOR_SIZE;
-
-        memset(new_enigma->rotors[OUTER]    , '\0', ROTOR_SIZE);
-        memset(new_enigma->rotors[MIDDLE]   , '\0', ROTOR_SIZE);
-        memset(new_enigma->rotors[INNER]    , '\0', ROTOR_SIZE);
-
-        init_rotors(new_enigma);
+        init_enigma(new_enigma);
     }
 
     return new_enigma;
@@ -111,15 +111,22 @@ void reset_rotors(Enigma *enigma)
     reset_rotor(enigma->rotors[MIDDLE]);
 }
 
+void standardize_character(char *character)
+{
+    *character = toupper(*character);
+
+    if((*character) == ' ')
+    {
+        *character = '#';
+    }
+}
+
 void standardize_text(char *text)
 {
     while(*text)
     {
-        *text = toupper(*text);
-        if((*text) == ' ')
-        {
-            *text = '#';
-        }
+        standardize_character(text);
+
         ++text;
     }
 }
@@ -142,6 +149,8 @@ int find_on_rotor(char *rotor,char character)
 void encode_character(Enigma *enigma,char *character)
 {
     int position;
+
+    standardize_character(character);
 
     position = find_on_rotor(enigma->rotors[INNER],*character);
     if(position >= 0)
@@ -170,6 +179,8 @@ void encode_message(Enigma *enigma,char *message,char *encoded_message)
 void decode_character(Enigma *enigma,char *character)
 {
     int position;
+
+    standardize_character(character);
 
     position = find_on_rotor(enigma->rotors[OUTER],*character);
     if(position >= 0)
