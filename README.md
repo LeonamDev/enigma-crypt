@@ -16,6 +16,8 @@ Then, for encryption of a character ch:
   - The rotors are concentric, so the index is the same, so if ch == inner[5], we'll get outer[5]
 3. Find outer[x] in the middle rotor (middle[y])
 4. The encrypted character will be outer[y]
+5. Rotate inner rotor by 1 position
+  - if the inner rotor completed a full turn, rotate middle rotor by 1 position
 
 #### Some improvements are needed
 - Remove some duplicated code, especially in file_encode/decode
