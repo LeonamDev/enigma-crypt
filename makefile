@@ -1,5 +1,5 @@
 
-COMPFLAGS = -Wall -std=c99
+COMPFLAGS = -Wall
 
 all: enigma.o test.o
 	gcc $(COMPFLAGS) test.o enigma.o -o enigma

@@ -1,5 +1,6 @@
 #include "enigma.h"
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,6 +97,20 @@ void spin_rotors(Enigma *enigma)
     }
 }
 
+void reset_rotor(char *rotor)
+{
+    while(rotor[0] != '#')
+    {
+        spin_rotor(rotor);
+    }
+}
+
+void reset_rotors(Enigma *enigma)
+{
+    reset_rotor(enigma->rotors[INNER]);
+    reset_rotor(enigma->rotors[MIDDLE]);
+}
+
 void standardize_text(char *text)
 {
     while(*text)
@@ -106,5 +121,75 @@ void standardize_text(char *text)
             *text = '#';
         }
         ++text;
+    }
+}
+
+int find_on_rotor(char *rotor,char character)
+{
+    int position;
+
+    for(position = 0; position < ROTOR_SIZE; ++position)
+    {
+        if(rotor[position] == character)
+        {
+            return position;
+        }
+    }
+
+    return -1;
+}
+
+void encode_character(Enigma *enigma,char *character)
+{
+    int position;
+
+    position = find_on_rotor(enigma->rotors[INNER],*character);
+    if(position >= 0)
+    {
+        position = find_on_rotor(enigma->rotors[MIDDLE],enigma->rotors[OUTER][position]);
+
+        *character = enigma->rotors[OUTER][position];
+
+        spin_rotors(enigma);
+    }
+}
+
+void encode_message(Enigma *enigma,char *message,char *encoded_message)
+{
+    strcpy(encoded_message,message);
+    standardize_text(encoded_message);
+
+    while(*encoded_message)
+    {
+        encode_character(enigma,encoded_message);
+
+        ++encoded_message;
+    }
+}
+
+void decode_character(Enigma *enigma,char *character)
+{
+    int position;
+
+    position = find_on_rotor(enigma->rotors[OUTER],*character);
+    if(position >= 0)
+    {
+        position = find_on_rotor(enigma->rotors[OUTER],enigma->rotors[MIDDLE][position]);
+
+        *character = enigma->rotors[INNER][position];
+
+        spin_rotors(enigma);
+    }
+}
+
+void decode_message(Enigma *enigma,char *message,char *decoded_message)
+{
+    strcpy(decoded_message,message);
+    standardize_text(decoded_message);
+
+    while(*decoded_message)
+    {
+        decode_character(enigma,decoded_message);
+        ++decoded_message;
     }
 }
