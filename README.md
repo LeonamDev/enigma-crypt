@@ -19,6 +19,10 @@ Then, for encryption of a character ch:
 5. Rotate inner rotor by 1 position
   - if the inner rotor completed a full turn, rotate middle rotor by 1 position
 
+#### How to test:
+`$ make`
+`$ ./enigma --help`
+
 #### TODOs
 - [ ] Remove some duplicated code, especially in file_encode/decode
 - [X] Have an option to pipe in encoded/plain data
