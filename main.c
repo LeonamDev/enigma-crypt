@@ -14,6 +14,7 @@ char* help_message(char *program_name);
 void print_help(char *program_name);
 void user_mode(void);
 void file_mode(char *filename,file_mode_t type);
+void resolve(void (*operation)(Enigma *,char *));
 
 int main(int argc, char *argv[])
 {
@@ -94,12 +95,7 @@ void print_help(char *program_name)
 
 void user_mode(void)
 {
-    Enigma enigma;
     int option;
-    char character;
-    void (*operation)(Enigma *,char *);
-
-    init_enigma(&enigma);
 
     printf( "\nWould you like to encode or decode?"
             "\n\t1 - encode"
@@ -113,20 +109,12 @@ void user_mode(void)
     switch(option)
     {
         case 2:
-            operation = decode_character;
+            printf("\nDecoded: ");
+            resolve(decode_character);
             break;
         default:
-            operation = encode_character;
-    }
-
-    printf("\nEncoded: ");
-    character = getchar();
-    while( (character != EOF) && (character != '\n') )
-    {
-        operation(&enigma,&character);
-        putchar(character);
-
-        character = getchar();
+            printf("\nEncoded: ");
+            resolve(encode_character);
     }
 }
 
@@ -145,5 +133,22 @@ void file_mode(char *filename,file_mode_t type)
     {
         printf("Decoding\n");
         decode_file(&enigma,filename);
+    }
+}
+
+void resolve(void (*operation)(Enigma *,char *))
+{
+    Enigma enigma;
+    char character;
+
+    init_enigma(&enigma);
+
+    character = getchar();
+    while( (character != EOF) && (character != '\n') )
+    {
+        operation(&enigma,&character);
+        putchar(character);
+
+        character = getchar();
     }
 }
