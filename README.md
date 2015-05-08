@@ -21,7 +21,7 @@ Then, for encryption of a character ch:
 
 #### TODOs
 - [ ] Remove some duplicated code, especially in file_encode/decode
-- [X] Have an option to pipe in encoded/plain data **done**
+- [X] Have an option to pipe in encoded/plain data
 - [ ] Translate spaces back on decoding
 - [ ] Enlarge rotors' character set
 - [ ] Allow setting of user-defined characters for rotors
