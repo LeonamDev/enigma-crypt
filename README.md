@@ -10,6 +10,7 @@ Simple implementation with fixed rotors.
 
 The idea is simple, you have 3 concentric rotors containing the caracters you wish to encode.
 Then, for encryption of a character ch:
+
 1. Search ch on the inner rotor
 2. Find the character aligned with it on the outer rotor (outer[x])
   - The rotors are concentric, so the index is the same, so if ch == inner[5], we'll get outer[5]
