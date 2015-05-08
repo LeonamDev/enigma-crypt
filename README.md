@@ -21,6 +21,7 @@ Then, for encryption of a character ch:
 
 #### How to test:
 `$ make`
+
 `$ ./enigma --help`
 
 #### TODOs
