@@ -19,10 +19,10 @@ Then, for encryption of a character ch:
 5. Rotate inner rotor by 1 position
   - if the inner rotor completed a full turn, rotate middle rotor by 1 position
 
-#### Some improvements are needed
-- Remove some duplicated code, especially in file_encode/decode
-- Have an option to pipe in encoded/plain data
-- Translate spaces back on decoding
-- Enlarge rotors' character set
-- Allow setting of user-defined characters for rotors
+#### TODOs
+- [ ] Remove some duplicated code, especially in file_encode/decode
+- [X] Have an option to pipe in encoded/plain data **done**
+- [ ] Translate spaces back on decoding
+- [ ] Enlarge rotors' character set
+- [ ] Allow setting of user-defined characters for rotors
   - *At least to allow programmers to reuse this code*

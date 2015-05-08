@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
         case 2:
             if(strcmp(argv[1],"-penc") == 0)
             {
-                ;
+                resolve(encode_character);
             }
             else if(strcmp(argv[1],"-pdec") == 0)
             {
-                ;
+                resolve(decode_character);
             }
             else if(strcmp(argv[1],"--help") == 0)
             {
